@@ -116,7 +116,7 @@ window.OpenPDFParamsParser = class {
       // Handle the case of http://foo.com/bar#NAMEDDEST. This is not
       // explicitly mentioned except by example in the Adobe
       // "PDF Open Parameters" document.
-      params['nameddest'] = paramTokens[0];
+      params['nameddest'] = decodeURIComponent(paramTokens[0]);
       return params;
     }
 
@@ -125,7 +125,12 @@ window.OpenPDFParamsParser = class {
       if (keyValueSplit.length != 2) {
         continue;
       }
-      params[keyValueSplit[0]] = keyValueSplit[1];
+      var paramValue = keyValueSplit[1];
+      if(keyValueSplit[0] == 'nameddest') {
+        paramValue = decodeURIComponent(paramValue);
+      }
+      
+      params[keyValueSplit[0]] = paramValue;
     }
 
     return params;
